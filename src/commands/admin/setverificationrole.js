@@ -23,17 +23,16 @@ module.exports = class SetVerificationRoleCommand extends Command {
     super(client, {
       name: 'setverificationrole',
       aliases: ['setvr', 'svr'],
-      usage: 'setverificationrole <role mention/ID>',
+      usage: 'setverificationrole <@role/ID>',
       description: oneLine`
-        Sets the role Si Ampas will give members who are verified.
-        Provide no role to clear the current \`verification role\`.
-        A \`verification role\`, a \`verification channel\`, 
-        and a \`verification message\` must be set to enable server verification.
-      `,
+        Définit le rôle donner aux membres qui sont vérifiés.
+        Ne fournissez aucun rôle pour effacer le \`rôle de vérification\` actuel.
+        Un \`rôle de vérification\`, un \`salon de vérification\`,
+        et un \`message de vérification\` doit être défini pour activer la vérification du serveur.`,
       type: client.types.ADMIN,
       clientPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'ADD_REACTIONS'],
       userPermissions: ['MANAGE_GUILD'],
-      examples: ['setverificationrole @Verified']
+      examples: ['setverificationrole @membre']
     });
   }
   async run(message, args) {
