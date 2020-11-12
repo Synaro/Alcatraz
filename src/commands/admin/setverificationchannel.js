@@ -23,18 +23,17 @@ module.exports = class SetVerificationChannelCommand extends Command {
     super(client, {
       name: 'setverificationchannel',
       aliases: ['setvc', 'svc'],
-      usage: 'setverificationchannel <channel mention/ID>',
+      usage: 'setverificationchannel <#salon/ID>',
       description: oneLine`
-        Sets the verification text channel for your server. If set, unverified members will start here.
-        Once verified, the \`verification role\` will be assigned to them.
-        Please ensure that new members are not able access other server channels for proper verification.
-        A \`verification channel\`, a \`verification message\`, 
-        and an \`verification role\` must be set to enable server verification.
-      `,
+       Définit le salon de texte de vérification pour votre serveur. Si défini, les membres non vérifiés commenceront ici.
+        Une fois vérifié, le «rôle de vérification» leur sera attribué.
+        Veuillez vous assurer que les nouveaux membres ne peuvent pas accéder à d'autres canaux de serveur pour une vérification appropriée.
+        Un \`salon de vérification\`, un \`message de vérification\`,
+        et un \ rôle de vérification\` doit être défini pour activer la vérification du serveur`,
       type: client.types.ADMIN,
       clientPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'ADD_REACTIONS'],
       userPermissions: ['MANAGE_GUILD'],
-      examples: ['setverificationchannel #verification']
+      examples: ['setverificationchannel #vérification']
     });
   }
   async run(message, args) {
