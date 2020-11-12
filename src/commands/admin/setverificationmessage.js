@@ -25,15 +25,14 @@ module.exports = class SetVerificationMessageCommand extends Command {
       aliases: ['setverificationmsg', 'setvm', 'svm'],
       usage: 'setverificationmessage <message>',
       description: oneLine`
-        Sets the message Si Ampas will post in the \`verification channel\`.
-        Enter no message to clear the verification message.
-        A \`verification role\`, a \`verification channel\`, 
-        and a \`verification message\` must be set to enable server verification.
-      `,
+        Définit le message que de vérification dans le \`salon de vérification\`.
+        N'entrez aucun message pour effacer le message de vérification.
+        Un \`rôle de vérification\`, un \`salon de vérification\`,
+        et un \`message de vérification\` doit être défini pour activer la vérification du serveur.      `,
       type: client.types.ADMIN,
       clientPermissions: ['SEND_MESSAGES', 'EMBED_LINKS', 'ADD_REACTIONS'],
       userPermissions: ['MANAGE_GUILD'],
-      examples: ['setverificationmessage Please read the server rules, then react to this message.']
+      examples: ['setverificationmessage Veuillez lire les règles du serveur, puis réagir à ce message.']
     });
   }
   async run(message, args) {
