@@ -41,8 +41,8 @@ db.prepare(`
     verification_message_id TEXT,
     welcome_channel_id TEXT,
     welcome_message TEXT,
-    farewell_channel_id TEXT,
-    farewell_message TEXT,
+    leave_channel_id TEXT,
+    leave_message TEXT,
     point_tracking INTEGER DEFAULT 1 NOT NULL,
     message_points INTEGER DEFAULT 1 NOT NULL,
     command_points INTEGER DEFAULT 1 NOT NULL,
@@ -83,7 +83,7 @@ const settings = {
       guild_name,
       system_channel_id,
       welcome_channel_id,
-      farewell_channel_id,
+      leave_channel_id,
       crown_channel_id,
       mod_log_id,
       admin_role_id,
@@ -119,7 +119,7 @@ const settings = {
     WHERE guild_id = ?;
   `),
   selectWelcomes: db.prepare('SELECT welcome_channel_id, welcome_message FROM settings WHERE guild_id = ?;'),
-  selectFarewells: db.prepare('SELECT farewell_channel_id, farewell_message FROM settings WHERE guild_id = ?;'),
+  selectLeaves: db.prepare('SELECT leave_channel_id, leave_message FROM settings WHERE guild_id = ?;'),
   selectPoints: db.prepare(`
     SELECT point_tracking, message_points, command_points, voice_points
     FROM settings
@@ -156,8 +156,8 @@ const settings = {
   updateVerificationMessageId: db.prepare('UPDATE settings SET verification_message_id = ? WHERE guild_id = ?;'),
   updateWelcomeChannelId: db.prepare('UPDATE settings SET welcome_channel_id = ? WHERE guild_id = ?;'),
   updateWelcomeMessage: db.prepare('UPDATE settings SET welcome_message = ? WHERE guild_id = ?;'),
-  updateFarewellChannelId: db.prepare('UPDATE settings SET farewell_channel_id = ? WHERE guild_id = ?;'),
-  updateFarewellMessage: db.prepare('UPDATE settings SET farewell_message = ? WHERE guild_id = ?;'),
+  updateLeaveChannelId: db.prepare('UPDATE settings SET leave_channel_id = ? WHERE guild_id = ?;'),
+  updateLeaveMessage: db.prepare('UPDATE settings SET leave_message = ? WHERE guild_id = ?;'),
   updatePointTracking: db.prepare('UPDATE settings SET point_tracking = ? WHERE guild_id = ?;'),
   updateMessagePoints: db.prepare('UPDATE settings SET message_points = ? WHERE guild_id = ?;'),
   updateCommandPoints: db.prepare('UPDATE settings SET command_points = ? WHERE guild_id = ?;'),
