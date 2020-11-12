@@ -21,10 +21,6 @@ module.exports = (client, member) => {
 
   client.logger.info(`${member.guild.name}: ${member.user.tag} a quitté le serveur`);
 
-  /** ------------------------------------------------------------------------------------------------
-   * MEMBER LOG
-   * ------------------------------------------------------------------------------------------------ */
-  // Get member log
   const memberLogId = client.db.settings.selectMemberLogId.pluck().get(member.guild.id);
   const memberLog = member.guild.channels.cache.get(memberLogId);
   if (
@@ -42,32 +38,24 @@ module.exports = (client, member) => {
     memberLog.send(embed);
   }
 
-  /** ------------------------------------------------------------------------------------------------
-   * FAREWELL MESSAGES
-   * ------------------------------------------------------------------------------------------------ */ 
-  // Send farewell message
-  let { farewell_channel_id: farewellChannelId, farewell_message: farewellMessage } = 
-    client.db.settings.selectFarewells.get(member.guild.id);
-  const farewellChannel = member.guild.channels.cache.get(farewellChannelId);
+  let { leave_channel_id: leaveChannelId, leave_message: leaveMessage } = 
+    client.db.settings.selectLeaves.get(member.guild.id);
+  const leaveChannel = member.guild.channels.cache.get(leaveChannelId);
   
   if (
-    farewellChannel &&
-    farewellChannel.viewable &&
-    farewellChannel.permissionsFor(member.guild.me).has(['SEND_MESSAGES', 'EMBED_LINKS']) &&
-    farewellMessage
+    leaveChannel &&
+    leaveChannel.viewable &&
+    leaveChannel.permissionsFor(member.guild.me).has(['SEND_MESSAGES', 'EMBED_LINKS']) &&
+    leaveMessage
   ) {
-    farewellMessage = farewellMessage
+    leaveMessage = leaveMessage
       .replace(/`?\?member`?/g, member) 
       .replace(/`?\?username`?/g, member.user.username) 
       .replace(/`?\?tag`?/g, member.user.tag) 
       .replace(/`?\?size`?/g, member.guild.members.cache.size); 
-    farewellChannel.send(new MessageEmbed().setDescription(farewellMessage).setColor(member.guild.me.displayHexColor));
+    leaveChannel.send(new MessageEmbed().setDescription(leaveMessage).setColor(member.guild.me.displayHexColor));
   }
   
-  /** ------------------------------------------------------------------------------------------------
-   * USERS TABLE
-   * ------------------------------------------------------------------------------------------------ */ 
-  // Update users table
   client.db.users.updateCurrentMember.run(0, member.id, member.guild.id);
   client.db.users.wipeTotalPoints.run(member.id, member.guild.id);
 
