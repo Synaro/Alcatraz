@@ -18,7 +18,7 @@ const { MessageEmbed } = require('discord.js');
 const { success } = require('../../utils/emojis.json');
 const { oneLine } = require('common-tags');
 
-module.exports = class SetFarewellMessageCommand extends Command {
+module.exports = class SetLeaveMessageCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'setleavemessage',
@@ -40,25 +40,25 @@ module.exports = class SetFarewellMessageCommand extends Command {
   }
   run(message, args) {
 
-    const { farewell_channel_id: farewellChannelId, farewell_message: oldFarewellMessage } = 
-      message.client.db.settings.selectFarewells.get(message.guild.id);
-    const farewellChannel = message.guild.channels.cache.get(farewellChannelId);
+    const { leave_channel_id: leaveChannelId, leave_message: oldLeaveMessage } = 
+      message.client.db.settings.selectLeaves.get(message.guild.id);
+    const leaveChannel = message.guild.channels.cache.get(leaveChannelId);
     
-    const oldStatus = message.client.utils.getStatus(farewellChannelId, oldFarewellMessage);
+    const oldStatus = message.client.utils.getStatus(leaveChannelId, oldLeaveMessage);
 
     const embed = new MessageEmbed()
       .setTitle('Paramètres: `Au revoir`')
       .setThumbnail(message.guild.iconURL({ dynamic: true }))
       .setDescription(`Le \`message d'au revoir\` a été mis à jour avec succès. ${success}`)
-      .addField('Salon', farewellChannel || '`Aucun`', true)
+      .addField('Salon', leaveChannel || '`Aucun`', true)
       .setFooter(message.member.displayName,  message.author.displayAvatarURL({ dynamic: true }))
       .setTimestamp()
       .setColor(message.guild.me.displayHexColor);
 
     if (!args[0]) {
-      message.client.db.settings.updateFarewellMessage.run(null, message.guild.id);
+      message.client.db.settings.updateLeaveMessage.run(null, message.guild.id);
 
-      const status = 'désactivé';
+      const status = 'non actif';
       const statusUpdate = (oldStatus != status) ? `\`${oldStatus}\` ➔ \`${status}\`` : `\`${oldStatus}\``; 
 
       return message.channel.send(embed
@@ -67,16 +67,16 @@ module.exports = class SetFarewellMessageCommand extends Command {
       );
     }
     
-    let farewellMessage = message.content.slice(message.content.indexOf(args[0]), message.content.length);
-    message.client.db.settings.updateFarewellMessage.run(farewellMessage, message.guild.id);
-    if (farewellMessage.length > 1024) farewellMessage = farewellMessage.slice(0, 1021) + '...';
+    let leaveMessage = message.content.slice(message.content.indexOf(args[0]), message.content.length);
+    message.client.db.settings.updateLeaveMessage.run(leaveMessage, message.guild.id);
+    if (leaveMessage.length > 1024) leaveMessage = leaveMessage.slice(0, 1021) + '...';
 
-    const status =  message.client.utils.getStatus(farewellChannel, farewellMessage);
+    const status =  message.client.utils.getStatus(leaveChannel, leaveMessage);
     const statusUpdate = (oldStatus != status) ? `\`${oldStatus}\` ➔ \`${status}\`` : `\`${oldStatus}\``;
     
     message.channel.send(embed
       .addField('Statut', statusUpdate, true)
-      .addField('Message', message.client.utils.replaceKeywords(farewellMessage))
+      .addField('Message', message.client.utils.replaceKeywords(leaveMessage))
     );
   }
 };
